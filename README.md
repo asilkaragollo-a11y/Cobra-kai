@@ -13,7 +13,7 @@
         }
 
         body {
-            background-color: #111;
+            background-color: #000000;
             color: #fff;
             display: flex;
             justify-content: center;
@@ -36,19 +36,19 @@
 
         .badge-header {
             border-bottom: 2px solid #ffcc00;
-            padding-bottom: 20px;
+            padding-bottom: 15px;
             margin-bottom: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        .cobra-logo {
+        .logo {
             width: 160px;
             height: auto;
             margin-bottom: 15px;
             border-radius: 8px;
-            box-shadow: 0 0 15px rgba(203, 32, 39, 0.5);
+            box-shadow: 0 0 15px rgba(255, 204, 0, 0.3);
         }
 
         h1 {
@@ -136,9 +136,7 @@
 
     <div class="pass-card">
         <div class="badge-header">
-            <!-- Cobra Kai Logo Bild -->
-            <img class="cobra-logo" width="694" height="442" alt="image" src="https://github.com/user-attachments/assets/2637e47a-9f14-4174-973e-4711cb0134d0" />
-            
+            <img class="logo" width="387" height="516" alt="Cobra Kai Logo" src="https://github.com/user-attachments/assets/e9c0279d-6716-4d6a-952e-a220218aa6fb" />
             <h1>Cobra Kai Pass</h1>
             <p class="subtitle">Registrierung für Fitnessstudio-Zutritt</p>
         </div>
