@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cobra Kai - Mitgliedspass Registrierung</title>
+    <title>Cobra Kai - Portal</title>
     <style>
         * {
             box-sizing: border-box;
@@ -31,7 +31,6 @@
             width: 100%;
             box-shadow: 0 0 25px rgba(255, 204, 0, 0.4);
             text-align: center;
-            position: relative;
         }
 
         .badge-header {
@@ -57,15 +56,33 @@
             letter-spacing: 2px;
         }
 
-        p.subtitle {
-            color: #e60000;
-            font-size: 0.85rem;
-            font-weight: bold;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            margin-top: 5px;
+        /* Tabs für Umschalten zwischen Registrieren und Anmelden */
+        .tab-container {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #333;
         }
 
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 0.9rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            color: #ffcc00;
+            border-bottom: 3px solid #ffcc00;
+            background-color: rgba(255, 204, 0, 0.05);
+        }
+
+        /* Hinweisboxen */
         .notice-box {
             background-color: rgba(230, 0, 0, 0.15);
             border: 1px solid #e60000;
@@ -75,6 +92,34 @@
             font-size: 0.8rem;
             margin-bottom: 20px;
             text-transform: uppercase;
+        }
+
+        .health-warning {
+            background-color: rgba(255, 165, 0, 0.15);
+            border: 1px solid #ffa500;
+            color: #ffcc00;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            margin-bottom: 20px;
+            text-align: left;
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+        }
+
+        .message-box {
+            display: none;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+
+        .message-success {
+            background-color: rgba(40, 167, 69, 0.2);
+            border: 1px solid #28a745;
+            color: #28a745;
         }
 
         .form-row {
@@ -111,7 +156,7 @@
             border-color: #ffcc00;
         }
 
-        button {
+        .submit-btn {
             width: 100%;
             padding: 14px;
             background-color: #e60000;
@@ -123,11 +168,15 @@
             text-transform: uppercase;
             cursor: pointer;
             transition: background-color 0.2s ease;
-            margin-top: 15px;
+            margin-top: 10px;
         }
 
-        button:hover {
+        .submit-btn:hover {
             background-color: #ff1a1a;
+        }
+
+        .hidden {
+            display: none;
         }
     </style>
 </head>
@@ -136,50 +185,143 @@
     <div class="pass-card">
         <div class="badge-header">
             <img class="logo" width="387" height="516" alt="Cobra Kai Logo" src="https://github.com/user-attachments/assets/7f080a3e-c052-4cf4-a299-ed6265007bad">
-            <h1>Cobra Kai Pass</h1>
-            <p class="subtitle">Registrierung für Fitnessstudio-Zutritt</p>
+            <h1>Cobra Kai Studio</h1>
         </div>
 
-        <div class="notice-box">
-            Achtung: Dieser Zutrittspass ist nach der Registrierung genau 30 Tage lang gültig.
+        <!-- Navigation zwischen Registrierung & Anmelden -->
+        <div class="tab-container">
+            <button class="tab-btn active" id="tab-register" onclick="switchTab('register')">Registrieren</button>
+            <button class="tab-btn" id="tab-login" onclick="switchTab('login')">Anmelden</button>
         </div>
 
-        <!-- action="pass.html" bewirkt die Weiterleitung nach dem Klick -->
-        <form action="pass.html" method="GET">
-            <div class="form-group">
-                <label for="fullname">Vollständiger Name</label>
-                <input type="text" id="fullname" name="fullname" placeholder="Vor- und Nachname" required>
+        <!-- Benachrichtigung -->
+        <div id="status-message" class="message-box"></div>
+
+        <!-- Gesundheitshinweis -->
+        <div class="health-warning">
+            ⚠️ WICHTIGER HINWEIS: Bei offenen Wunden oder Verletzungen ist das Training strengstens untersagt!
+        </div>
+
+        <!-- REGISTRIERUNGSFORMULAR -->
+        <form id="form-register" onsubmit="handleRegister(event)">
+            <div class="notice-box">
+                Zutrittspass ist nach der Registrierung 30 Tage lang gültig.
             </div>
 
             <div class="form-group">
-                <label for="email">E-Mail-Adresse</label>
-                <input type="email" id="email" placeholder="deine@email.com" required>
+                <label for="reg-name">Vollständiger Name</label>
+                <input type="text" id="reg-name" placeholder="Vor- und Nachname" required>
+            </div>
+
+            <div class="form-group">
+                <label for="reg-email">E-Mail-Adresse</label>
+                <input type="email" id="reg-email" placeholder="deine@email.com" required>
             </div>
 
             <div class="form-row">
                 <div class="form-group">
-                    <label for="height">Größe (cm)</label>
-                    <input type="number" id="height" placeholder="z. B. 175" min="100" max="250" required>
+                    <label for="reg-height">Größe (cm)</label>
+                    <input type="number" id="reg-height" placeholder="z. B. 175" min="100" max="250" required>
                 </div>
                 <div class="form-group">
-                    <label for="weight">Gewicht (kg)</label>
-                    <input type="number" id="weight" placeholder="z. B. 70" min="30" max="250" required>
+                    <label for="reg-weight">Gewicht (kg)</label>
+                    <input type="number" id="reg-weight" placeholder="z. B. 70" min="30" max="250" required>
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="password">Neues Passwort erstellen</label>
-                <input type="password" id="password" placeholder="Passwort festlegen" required>
+                <label for="reg-pass">Passwort erstellen</label>
+                <input type="password" id="reg-pass" placeholder="Passwort festlegen" required>
+            </div>
+
+            <button type="submit" class="submit-btn">Pass Anfordern & Registrieren</button>
+        </form>
+
+        <!-- ANMELDEFORMULAR -->
+        <form id="form-login" class="hidden" onsubmit="handleLogin(event)">
+            <div class="form-group">
+                <label for="login-email">E-Mail-Adresse</label>
+                <input type="email" id="login-email" placeholder="deine@email.com" required>
             </div>
 
             <div class="form-group">
-                <label for="password-confirm">Passwort bestätigen</label>
-                <input type="password" id="password-confirm" placeholder="Passwort wiederholen" required>
+                <label for="login-pass">Passwort</label>
+                <input type="password" id="login-pass" placeholder="Dein Passwort" required>
             </div>
 
-            <button type="submit">Pass Anfordern & Registrieren</button>
+            <button type="submit" class="submit-btn">Einloggen</button>
         </form>
     </div>
+
+    <script>
+        // Tab-Umschaltung
+        function switchTab(tab) {
+            document.getElementById('form-register').classList.add('hidden');
+            document.getElementById('form-login').classList.add('hidden');
+            document.getElementById('tab-register').classList.remove('active');
+            document.getElementById('tab-login').classList.remove('active');
+            
+            const msgBox = document.getElementById('status-message');
+            msgBox.style.display = 'none';
+
+            if (tab === 'register') {
+                document.getElementById('form-register').classList.remove('hidden');
+                document.getElementById('tab-register').classList.add('active');
+            } else {
+                document.getElementById('form-login').classList.remove('hidden');
+                document.getElementById('tab-login').classList.add('active');
+            }
+        }
+
+        // Registrierung verarbeiten
+        function handleRegister(e) {
+            e.preventDefault();
+            const name = document.getElementById('reg-name').value;
+            const email = document.getElementById('reg-email').value;
+            const pass = document.getElementById('reg-pass').value;
+
+            // In LocalStorage speichern
+            const user = { name: name, email: email, pass: pass };
+            localStorage.setItem('cobra_user_' + email, JSON.stringify(user));
+
+            const msgBox = document.getElementById('status-message');
+            msgBox.className = "message-box message-success";
+            msgBox.innerText = "Registrierung erfolgreich! Du kannst dich jetzt anmelden.";
+            msgBox.style.display = 'block';
+
+            // Nach Registrierung auf Login umschalten und E-Mail vorausfüllen
+            setTimeout(() => {
+                switchTab('login');
+                document.getElementById('login-email').value = email;
+            }, 1500);
+        }
+
+        // Login verarbeiten
+        function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const pass = document.getElementById('login-pass').value;
+
+            const storedUser = localStorage.getItem('cobra_user_' + email);
+
+            if (storedUser) {
+                const user = JSON.parse(storedUser);
+                if (user.pass === pass) {
+                    const msgBox = document.getElementById('status-message');
+                    msgBox.className = "message-box message-success";
+                    msgBox.innerText = "Anmeldung erfolgreich! Zutritt wird gewährt...";
+                    msgBox.style.display = 'block';
+
+                    setTimeout(() => {
+                        window.location.href = `pass.html?fullname=${encodeURIComponent(user.name)}`;
+                    }, 1200);
+                    return;
+                }
+            }
+
+            alert("E-Mail oder Passwort falsch!");
+        }
+    </script>
 
 </body>
 </html>
