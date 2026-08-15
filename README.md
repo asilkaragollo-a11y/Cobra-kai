@@ -96,7 +96,7 @@
             text-transform: uppercase;
         }
 
-        input, select {
+        input {
             width: 100%;
             padding: 10px;
             background-color: #2b2b2b;
@@ -106,7 +106,7 @@
             font-size: 0.95rem;
         }
 
-        input:focus, select:focus {
+        input:focus {
             outline: none;
             border-color: #ffcc00;
         }
@@ -144,10 +144,11 @@
             Achtung: Dieser Zutrittspass ist nach der Registrierung genau 30 Tage lang gültig.
         </div>
 
-        <form>
+        <!-- action="pass.html" bewirkt die Weiterleitung nach dem Klick -->
+        <form action="pass.html" method="GET">
             <div class="form-group">
                 <label for="fullname">Vollständiger Name</label>
-                <input type="text" id="fullname" placeholder="Vor- und Nachname" required>
+                <input type="text" id="fullname" name="fullname" placeholder="Vor- und Nachname" required>
             </div>
 
             <div class="form-group">
@@ -182,4 +183,3 @@
 
 </body>
 </html>
-
