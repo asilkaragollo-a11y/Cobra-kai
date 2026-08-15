@@ -1,0 +1,199 @@
+pass.html
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cobra Kai - Digitaler Zutrittspass</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial Black', Gadget, sans-serif;
+        }
+
+        body {
+            background-color: #000000;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .pass-card {
+            background-color: #1a1a1a;
+            border: 4px solid #ffcc00;
+            border-radius: 12px;
+            padding: 35px;
+            max-width: 450px;
+            width: 100%;
+            box-shadow: 0 0 30px rgba(255, 204, 0, 0.5);
+            text-align: center;
+        }
+
+        .status-badge {
+            background-color: #28a745;
+            color: #fff;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            display: inline-block;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .logo {
+            width: 130px;
+            height: auto;
+            margin-bottom: 10px;
+            border-radius: 8px;
+        }
+
+        h1 {
+            color: #ffcc00;
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .member-info {
+            background-color: #262626;
+            border-left: 4px solid #ffcc00;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: left;
+            border-radius: 4px;
+        }
+
+        .info-label {
+            color: #888;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
+
+        .info-value {
+            color: #fff;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .qr-section {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            display: inline-block;
+            margin: 15px 0;
+        }
+
+        .qr-section img {
+            width: 160px;
+            height: 160px;
+            display: block;
+        }
+
+        .code-box {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #000;
+            color: #ffcc00;
+            border: 1px dashed #ffcc00;
+            padding: 10px;
+            font-size: 1.2rem;
+            letter-spacing: 3px;
+            margin-top: 10px;
+            border-radius: 6px;
+        }
+
+        .logout-btn {
+            display: inline-block;
+            margin-top: 25px;
+            background-color: #e60000;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .logout-btn:hover {
+            background-color: #ff1a1a;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="pass-card">
+        <div class="status-badge">✓ ANMELDUNG ERFOLGREICH</div>
+
+        <div>
+            <img class="logo" width="387" height="516" alt="Cobra Kai Logo" src="https://github.com/user-attachments/assets/7f080a3e-c052-4cf4-a299-ed6265007bad">
+            <h1>Cobra Kai Pass</h1>
+        </div>
+
+        <div class="member-info">
+            <div class="info-label">Mitglied Name</div>
+            <div class="info-value" id="display-name">Mitglied</div>
+
+            <div class="info-label">Status</div>
+            <div class="info-value" style="color: #28a745;">Du bist angemeldet</div>
+
+            <div class="info-label">Ablaufdatum des Passes</div>
+            <div class="info-value" id="expiry-date" style="color: #ff4d4d;">-</div>
+        </div>
+
+        <div class="qr-section">
+            <img id="qr-code" src="" alt="Zutritts QR-Code">
+        </div>
+
+        <div class="info-label">Zutritts-Code</div>
+        <div class="code-box" id="member-code">CK-0000-2026</div>
+
+        <button class="logout-btn" onclick="logout()">Abmelden</button>
+    </div>
+
+    <script>
+        // Prüfen, ob der Nutzer angemeldet ist
+        const session = localStorage.getItem('cobra_active_session');
+
+        if (!session) {
+            // Nicht angemeldet -> zurück zur Startseite
+            window.location.href = 'index.html';
+        } else {
+            const data = JSON.parse(session);
+            const now = new Date().getTime();
+
+            // Prüfen, ob die 30 Tage abgelaufen sind
+            if (now > data.expiry) {
+                localStorage.removeItem('cobra_active_session');
+                alert('Deine 30-Tage-Anmeldung ist abgelaufen. Bitte melde dich erneut an.');
+                window.location.href = 'index.html';
+            } else {
+                // Daten auf dem Pass anzeigen
+                document.getElementById('display-name').innerText = data.name;
+
+                // Code und QR-Code setzen
+                const userCode = 'CK-' + data.email.length + Math.floor(1000 + Math.random() * 9000) + '-2026';
+                document.getElementById('member-code').innerText = userCode;
+                document.getElementById('qr-code').src = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(userCode)}`;
+
+                // Datum formatieren
+                const expDate = new Date(data.expiry);
+                document.getElementById('expiry-date').innerText = expDate.toLocaleDateString('de-DE');
+            }
+        }
+
+        // Abmelde-Funktion
+        function logout() {
+            localStorage.removeItem('cobra_active_session');
+            window.location.href = 'index.html';
+        }
+    </script>
+
+</body>
+</html>
