@@ -43,37 +43,12 @@
             align-items: center;
         }
 
-        /* Pure CSS Cobra Kai Badge */
-        .cobra-badge {
-            background-color: #000;
-            border: 4px solid #CB2027;
-            width: 140px;
-            height: 140px;
-            border-radius: 50%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Impact', sans-serif;
-            color: #DDA314;
-            text-align: center;
-            box-shadow: 0 0 15px rgba(203, 32, 39, 0.5);
+        .cobra-logo {
+            width: 160px;
+            height: auto;
             margin-bottom: 15px;
-        }
-
-        .cobra-text {
-            font-size: 22px;
-            font-style: italic;
-            letter-spacing: 1px;
-            line-height: 1.1;
-            text-transform: uppercase;
-        }
-
-        .cobra-sub {
-            font-size: 10px;
-            color: #E9E567;
-            letter-spacing: 2px;
-            margin-top: 5px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(203, 32, 39, 0.5);
         }
 
         h1 {
@@ -161,11 +136,8 @@
 
     <div class="pass-card">
         <div class="badge-header">
-            <!-- Cobra Kai CSS Badge -->
-            <div class="cobra-badge">
-                <div class="cobra-text">Cobra Kai</div>
-                <div class="cobra-sub">EST. 1984</div>
-            </div>
+            <!-- Cobra Kai Logo Bild -->
+            <img class="cobra-logo" width="694" height="442" alt="image" src="https://github.com/user-attachments/assets/2637e47a-9f14-4174-973e-4711cb0134d0" />
             
             <h1>Cobra Kai Pass</h1>
             <p class="subtitle">Registrierung für Fitnessstudio-Zutritt</p>
