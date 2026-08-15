@@ -36,14 +36,44 @@
 
         .badge-header {
             border-bottom: 2px solid #ffcc00;
-            padding-bottom: 15px;
+            padding-bottom: 20px;
             margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        .logo {
-            width: 130px;
-            height: auto;
-            margin-bottom: 10px;
+        /* Pure CSS Cobra Kai Badge */
+        .cobra-badge {
+            background-color: #000;
+            border: 4px solid #CB2027;
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Impact', sans-serif;
+            color: #DDA314;
+            text-align: center;
+            box-shadow: 0 0 15px rgba(203, 32, 39, 0.5);
+            margin-bottom: 15px;
+        }
+
+        .cobra-text {
+            font-size: 22px;
+            font-style: italic;
+            letter-spacing: 1px;
+            line-height: 1.1;
+            text-transform: uppercase;
+        }
+
+        .cobra-sub {
+            font-size: 10px;
+            color: #E9E567;
+            letter-spacing: 2px;
+            margin-top: 5px;
         }
 
         h1 {
@@ -131,7 +161,12 @@
 
     <div class="pass-card">
         <div class="badge-header">
-            <img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/2/23/Cobra_Kai_logo.png" alt="Cobra Kai Logo">
+            <!-- Cobra Kai CSS Badge -->
+            <div class="cobra-badge">
+                <div class="cobra-text">Cobra Kai</div>
+                <div class="cobra-sub">EST. 1984</div>
+            </div>
+            
             <h1>Cobra Kai Pass</h1>
             <p class="subtitle">Registrierung für Fitnessstudio-Zutritt</p>
         </div>
