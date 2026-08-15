@@ -1,5 +1,5 @@
 # Cobra-kai
-<!DOCTYPE html>
+sekai taikei
 <html lang="de">
 <head>
     <meta charset="UTF-8">
